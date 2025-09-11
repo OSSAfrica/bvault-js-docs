@@ -1,6 +1,10 @@
-import {themes as prismThemes} from 'prism-react-renderer';
-import type {Config} from '@docusaurus/types';
+import { themes as prismThemes } from 'prism-react-renderer';
+import type { Config } from '@docusaurus/types';
 import type * as Preset from '@docusaurus/preset-classic';
+import 'dotenv/config';
+
+console.log({ POSTHOG_API_KEY: process.env.POSTHOG_API_KEY });
+
 
 // This runs in Node.js - Don't use client-side code here (browser APIs, JSX...)
 
@@ -10,6 +14,15 @@ const config: Config = {
     favicon: 'img/logo.svg',
 
     themes: ['@docusaurus/theme-mermaid'],
+    plugins: [
+        [
+            "posthog-docusaurus", {
+                apiKey: process.env.POSTHOG_API_KEY || "DEV",
+                appUrl: "https://app.posthog.com", // optional
+                enableInDevelopment: true, // optional
+            },
+        ],
+    ],
     markdown: {
         mermaid: true,
     },
