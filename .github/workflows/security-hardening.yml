@@ -9,8 +9,8 @@ on:
 permissions:
   contents: read
 
-# DCO is checked in ci.yml. CodeQL uses code scanning default setup,
-# which rejects uploads from duplicate advanced workflows.
+# DCO is enforced by the DCO GitHub App. CodeQL uses code scanning
+# default setup, which rejects uploads from duplicate advanced workflows.
 jobs:
   dependency-review:
     name: Security Hardening

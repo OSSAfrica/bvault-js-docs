@@ -18,7 +18,7 @@ npx playwright install chromium
 npm run ci
 ```
 
-CI runs formatting, a production build (which generates route types), typechecking, rendered-page/link/asset checks, and desktop/mobile Chromium smoke tests including search, redirects, and 404s. `npm run format` applies formatting. CodeQL uses GitHub's default setup; do not add a duplicate advanced CodeQL workflow. Security and dependency-review workflows follow the library repo. Signed commits and one PR approval are required, with DCO sign-off checked separately.
+CI runs formatting, a production build (which generates route types), typechecking, rendered-page/link/asset checks, and desktop/mobile Chromium smoke tests including search, redirects, and 404s. `npm run format` applies formatting. CodeQL uses GitHub's default setup; do not add a duplicate advanced CodeQL workflow. Security and dependency-review workflows follow the library repo. Signed commits and one PR approval are required, with DCO sign-off enforced by the same GitHub App used for the library.
 
 ## Writing docs
 
