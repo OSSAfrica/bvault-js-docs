@@ -3,12 +3,40 @@
 @import 'fumadocs-ui/css/preset.css';
 
 :root {
-  --color-fd-primary: #146c54;
+  --color-fd-background: #f5f0eb;
+  --color-fd-foreground: #30231d;
+  --color-fd-primary: #6f4e37;
   --color-fd-primary-foreground: #ffffff;
+  --color-fd-muted: #ece2da;
+  --color-fd-muted-foreground: #756052;
+  --color-fd-card: #fcf9f6;
+  --color-fd-card-foreground: #30231d;
+  --color-fd-popover: #fcf9f6;
+  --color-fd-popover-foreground: #30231d;
+  --color-fd-secondary: #eee5de;
+  --color-fd-secondary-foreground: #4e342e;
+  --color-fd-accent: #e9dace;
+  --color-fd-accent-foreground: #4e342e;
+  --color-fd-border: #dfcfc4;
+  --color-fd-ring: #996c52;
 }
 .dark {
-  --color-fd-primary: #89d8b9;
-  --color-fd-primary-foreground: #102c22;
+  --color-fd-background: #2b1d16;
+  --color-fd-foreground: #f5f0eb;
+  --color-fd-primary: #d7ccc8;
+  --color-fd-primary-foreground: #2b1d16;
+  --color-fd-muted: #3b2a22;
+  --color-fd-muted-foreground: #c4b3a6;
+  --color-fd-card: #302119;
+  --color-fd-card-foreground: #f5f0eb;
+  --color-fd-popover: #35251d;
+  --color-fd-popover-foreground: #f5f0eb;
+  --color-fd-secondary: #392820;
+  --color-fd-secondary-foreground: #f5f0eb;
+  --color-fd-accent: #4a3225;
+  --color-fd-accent-foreground: #f5f0eb;
+  --color-fd-border: #5d4037;
+  --color-fd-ring: #b3836a;
 }
 body {
   font-family: 'Avenir Next', 'Segoe UI', sans-serif;
@@ -93,12 +121,12 @@ input {
   text-underline-offset: 3px;
 }
 .code-window {
-  background: #102c25;
-  color: #d9e9df;
-  border: 1px solid #33594a;
+  background: #2b1d16;
+  color: #f0e4da;
+  border: 1px solid #6f4e37;
   border-radius: 10px;
   overflow: hidden;
-  box-shadow: 0 18px 60px #102c2515;
+  box-shadow: 0 18px 60px #2b1d1615;
 }
 .code-title {
   display: flex;
@@ -111,13 +139,13 @@ input {
 }
 .code-title > span:last-child {
   margin-left: auto;
-  color: #a7c5b7;
+  color: #d0b8a6;
 }
 .status-dot {
   display: block;
   width: 7px;
   height: 7px;
-  background: #a4dcba;
+  background: #cba084;
   border-radius: 50%;
 }
 .code-window pre {
@@ -132,7 +160,7 @@ input {
   align-items: center;
   border-top: 1px solid #ffffff1c;
   padding: 13px 22px;
-  color: #a7c5b7;
+  color: #d0b8a6;
   font-size: 11px;
 }
 .principles {
