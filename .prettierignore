@@ -1,0 +1,9 @@
+bun.lock
+node_modules
+dist
+.tanstack
+.source
+src/routeTree.gen.ts
+playwright-report
+test-results
+.idea

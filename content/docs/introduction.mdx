@@ -1,0 +1,26 @@
+---
+title: 'Introduction'
+description: 'Encrypted browser storage. Start with the API version you have installed.'
+---
+
+## Choose your version
+
+These docs default to **bvault-js 0.3.4**, the published npm release verified during this migration. It uses a password supplied by your application. Library `main` contains a different, upcoming 1.0 API; see the [1.0 preview](/docs/next). A package manifest on a branch is not proof that a new API has been published.
+
+|                        | Stable 0.3.4                        | Upcoming 1.0                                   |
+| ---------------------- | ----------------------------------- | ---------------------------------------------- |
+| Initialization         | `initializeSecureStorage(password)` | `initializeSecureStorage()`                    |
+| Key                    | Password-derived                    | Generated non-extractable CryptoKey            |
+| Public encrypt/decrypt | Available                           | Removed                                        |
+| Storage keys           | Caller-provided keys                | `bv1:` prefix                                  |
+| Read failure           | Returns null and removes the item   | Returns null and retains ciphertext            |
+| `clear()`              | Clears the entire backing Storage   | Clears bVault-owned entries                    |
+| SSR import             | Browser globals accessed at import  | Safe to import; operations remain browser-only |
+
+## What bVault-js does
+
+bVault-js wraps `localStorage` and `sessionStorage` with asynchronous AES-GCM encryption. Its browser APIs also use IndexedDB. Values you read are strings; parse JSON in your application when appropriate.
+
+Encryption does not stop a script that is already running in your origin from reading data through your application. Do not treat browser encryption as an XSS defense or a replacement for server-side authorization.
+
+Start with [installation](/docs/getting-started/installation-guide), follow the [quick start](/docs/getting-started/quick-start), and read the [security boundaries](/docs/security) before adopting the library.

@@ -1,0 +1,33 @@
+---
+title: 'Secure storage'
+description: 'The public storage API and its actual behavior in stable 0.3.4.'
+---
+
+## initializeSecureStorage(password)
+
+`(password: string) => Promise<void>` initializes IndexedDB and stores the password in module memory. It rejects for an empty password or an initialization failure. Call once and await it before set/get operations. Further calls return early after initialization, so passing a different password is not an account-switch mechanism.
+
+## secureLocalStorage and secureSessionStorage
+
+| Method                | Result                    | Stable 0.3.4 behavior                                                            |
+| --------------------- | ------------------------- | -------------------------------------------------------------------------------- |
+| `setItem(key, value)` | `Promise<void>`           | Objects become JSON strings; other values use string conversion, then encryption |
+| `getItem(key)`        | `Promise<string \| null>` | Returns decrypted text, or null for absent/failed reads                          |
+| `removeItem(key)`     | `void`                    | Removes the value; starts asynchronous metadata cleanup                          |
+| `clear()`             | `void`                    | Clears **all** entries in that Storage, then starts metadata cleanup             |
+
+Set/get reject when initialization has not completed. Writes wrap crypto, serialization, and storage failures in `EncryptionError`. Metadata cleanup from synchronous remove/clear is not awaitable through their return value.
+
+## Storage format
+
+The published 0.3.4 implementation writes ciphertext directly under the caller's storage key. It stores IV/salt metadata separately in IndexedDB's `encryption_metadata_local` or `encryption_metadata_session` store. It does **not** use `bvault_enc_` prefixes or store a JSON object containing ciphertext, IV, and salt in localStorage.
+
+**Read failures delete data in 0.3.4.** The wrapper catches decryption/metadata failures, removes the storage entry and its metadata, and returns null. It does not normally throw `DecryptionError` from a failed decryption to your caller. Do not attempt reads with a speculative password against important data.
+
+## isSecureStorageInitialized()
+
+`() => boolean` reports this module instance's initialization state. It does not prove that every stored item is readable, or coordinate other tabs.
+
+## Lifecycle differences
+
+Stable 0.3.4 has no exported destruction API. The upcoming version adds one, changes the namespace, limits clear to owned entries, and preserves unreadable ciphertext. Read [the preview API](/docs/next/api) before comparing behavior across versions.

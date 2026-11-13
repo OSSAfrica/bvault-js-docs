@@ -1,0 +1,4 @@
+{
+  "title": "Stable 0.3.4 API",
+  "pages": ["secure-storage", "encryption", "error-handling"]
+}

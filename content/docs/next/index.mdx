@@ -1,0 +1,22 @@
+---
+title: '1.0 preview'
+description: 'Passwordless encrypted browser storage on library main; not the stable npm API.'
+---
+
+## This API is upcoming
+
+At migration assessment, npm latest is **0.3.4**. The following describes library main and must not be copied into an application installed with `bvault-js@0.3.4`. Publication is tracked in [library #29](https://github.com/OSSAfrica/bvault-js/issues/29).
+
+The new model generates a non-extractable AES-GCM key, persists it in IndexedDB, and reuses it across page loads for the same origin. Applications do not supply a password. General-purpose encrypt/decrypt are removed from the public surface.
+
+```typescript
+// Upcoming 1.0 only. Not executable with the published 0.3.4 artifact.
+import { initializeSecureStorage, secureLocalStorage } from 'bvault-js';
+
+await initializeSecureStorage();
+await secureLocalStorage.setItem('preferences', { theme: 'dark' });
+const value = await secureLocalStorage.getItem('preferences');
+const preferences = value === null ? null : JSON.parse(value);
+```
+
+Non-extractability restricts exporting raw key bytes through Web Crypto; it does not prevent active same-origin scripts from using a reachable key handle. Key loss means data loss. Read the [security model](/docs/security), [upgrade guide](/docs/guides/migrating-to-1), and [preview API](/docs/next/api).

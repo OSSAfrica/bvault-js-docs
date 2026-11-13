@@ -1,0 +1,37 @@
+---
+title: 'Error handling'
+description: 'Distinguish low-level errors and storage-wrapper behavior across versions.'
+---
+
+## Stable 0.3.4
+
+Initialization rejects when no password is supplied or IndexedDB setup fails. Set/get reject before initialization. A write wraps failures in `EncryptionError`, including underlying storage errors; inspect the cause when available.
+
+Low-level `decrypt` can throw `DecryptionError`. **Storage getItem behaves differently:** it catches decryption or metadata errors, removes the affected value/metadata, and returns null. Null therefore does not distinguish an absent item from a failed read in 0.3.4.
+
+```typescript
+export async function readCachedTheme(password: string) {
+  const { initializeSecureStorage, secureLocalStorage, EncryptionError } =
+    await import('bvault-js');
+  await initializeSecureStorage(password);
+
+  try {
+    await secureLocalStorage.setItem('theme', 'dark');
+  } catch (error) {
+    if (error instanceof EncryptionError) {
+      // Show a cache-write failure state. Do not log plaintext or the password.
+      return null;
+    }
+    throw error;
+  }
+  return secureLocalStorage.getItem('theme');
+}
+```
+
+Treat browser storage as a cache for data you can recover elsewhere. Catch initialization failures in your UI and let the user retry or continue without caching. Parse application JSON separately: JSON parsing errors are not cryptographic errors.
+
+## Upcoming 1.0
+
+The upcoming wrapper returns null on decryption failure **without deleting ciphertext**. Errors obtaining storage or initializing may still throw; quota/security failures from writes propagate unchanged, while crypto/serialization failures become EncryptionError. See the [preview API](/docs/next/api).
+
+The proposed ability to distinguish missing from undecryptable is tracked in [library #14](https://github.com/OSSAfrica/bvault-js/issues/14). Do not write examples using that feature until an implementation is released.

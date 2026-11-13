@@ -1,0 +1,38 @@
+---
+title: 'Quick start'
+description: 'A complete browser-only example for bvault-js 0.3.4.'
+---
+
+## Initialize, write, and read
+
+This example targets **0.3.4**. Ask the user for a secret through your application's UI; do not hardcode one, place it in public environment variables, or derive it from a browser fingerprint. The library does not provide a password UI or password recovery.
+
+```typescript
+// Call from a browser event, after your app has obtained the password.
+export async function savePreferences(password: string) {
+  const { initializeSecureStorage, secureLocalStorage } = await import('bvault-js');
+  await initializeSecureStorage(password);
+  await secureLocalStorage.setItem('preferences', { theme: 'dark' });
+
+  const value = await secureLocalStorage.getItem('preferences');
+  const preferences = value === null ? null : JSON.parse(value);
+  return preferences;
+}
+```
+
+Initialize once before using the wrappers, and await writes before reading. The password must be available again on subsequent loads to decrypt values. Do not initialize a single page session with different passwords and assume this switches users: initialization returns early after the first success.
+
+## Choose storage
+
+`secureLocalStorage` uses localStorage; `secureSessionStorage` uses sessionStorage. Both store the associated IV/salt metadata in IndexedDB in 0.3.4. These are browser storage lifecycles, not a durable backup.
+
+```typescript
+export async function removePreferences() {
+  const { secureLocalStorage } = await import('bvault-js');
+  secureLocalStorage.removeItem('preferences');
+}
+```
+
+**Do not call `clear()` casually in 0.3.4:** it clears the entire corresponding browser Storage, including entries belonging to other code. A failed read also removes the affected entry in this version. See [the storage API](/docs/core-api/secure-storage).
+
+There is no `destroySecureStorage` export in 0.3.4. The [1.0 preview](/docs/next/api) documents the future lifecycle API, and the [upgrade guide](/docs/guides/migrating-to-1) explains the destructive transition.

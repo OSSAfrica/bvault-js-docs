@@ -1,0 +1,85 @@
+---
+title: 'Framework integration'
+description: 'Initialize on the client and keep examples aligned with stable 0.3.4.'
+---
+
+These examples target **0.3.4**. Import dynamically in browser callbacks because this published build accesses browser globals at module scope. The password comes from an application UI or secret-handling design; it is not a fingerprint or build-time constant.
+
+## React and TanStack Start
+
+Use a browser event to initiate the import. This works in a server-rendered component without running the browser module on the server. Disable the action while initialization is pending.
+
+```tsx
+import { useState } from 'react';
+
+export function UnlockCache() {
+  const [password, setPassword] = useState('');
+  const [status, setStatus] = useState<'locked' | 'loading' | 'ready' | 'error'>('locked');
+
+  async function unlock() {
+    setStatus('loading');
+    try {
+      const { initializeSecureStorage, secureLocalStorage } = await import('bvault-js');
+      await initializeSecureStorage(password);
+      await secureLocalStorage.setItem('preferences', { theme: 'dark' });
+      setPassword('');
+      setStatus('ready');
+    } catch {
+      setStatus('error');
+    }
+  }
+
+  return (
+    <form
+      onSubmit={(event) => {
+        event.preventDefault();
+        void unlock();
+      }}
+    >
+      <label htmlFor="cache-password">Cache password</label>
+      <input
+        id="cache-password"
+        type="password"
+        autoComplete="current-password"
+        value={password}
+        onChange={(event) => setPassword(event.target.value)}
+      />
+      <button disabled={!password || status === 'loading' || status === 'ready'}>
+        {status === 'loading' ? 'Opening…' : 'Open cache'}
+      </button>
+      <p role="status">{status}</p>
+    </form>
+  );
+}
+```
+
+This is a single initialization entry point. For multiple components, put initialization in one application service and share its in-flight promise. Do not initialize independently from multiple mount effects or treat a second call with a different password as switching accounts.
+
+## Vue
+
+Import inside a browser event handler or `onMounted`, after obtaining the password. Keep loading/error state in the application.
+
+```typescript
+export async function unlockFromVue(password: string) {
+  const { initializeSecureStorage, secureLocalStorage } = await import('bvault-js');
+  await initializeSecureStorage(password);
+  const value = await secureLocalStorage.getItem('preferences');
+  return value === null ? null : JSON.parse(value);
+}
+```
+
+## Svelte
+
+Call the same browser-only function from an event handler or `onMount`; never at server module scope. Await initialization before reads/writes and keep a cancellation/loading strategy in the component.
+
+```typescript
+export async function unlockFromSvelte(password: string) {
+  const { initializeSecureStorage, secureLocalStorage } = await import('bvault-js');
+  await initializeSecureStorage(password);
+  return secureLocalStorage.getItem('theme');
+}
+```
+
+The [library working-example issue #30](https://github.com/OSSAfrica/bvault-js/issues/30) tracks a maintained runnable demo. The experimental Rust/WASM branch uses a separate older API and is not the source for current installation instructions.
+
+See [security](/docs/security), [read failures](/docs/core-api/error-handling), and the [1.0 upgrade guide](/docs/guides/migrating-to-1) before adding account-switch or logout flows.

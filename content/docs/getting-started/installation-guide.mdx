@@ -1,0 +1,30 @@
+---
+title: 'Installation'
+description: 'Install the published 0.3.4 package and check browser requirements.'
+---
+
+## Install stable 0.3.4
+
+```bash
+npm install bvault-js@0.3.4
+```
+
+You can also use `pnpm add bvault-js@0.3.4` or `yarn add bvault-js@0.3.4`. The explicit version keeps these examples aligned with the published password-based API. Check `npm view bvault-js version` before choosing a newer release.
+
+## Browser requirements
+
+Use a secure context (HTTPS, or localhost for development) with Web Crypto, localStorage/sessionStorage, and IndexedDB available. Storage can be blocked by browser policy, private browsing, or an embedded context. Handle initialization failures rather than relying on a historical browser-version table.
+
+The library's browser requirements are separate from the Node version used to build this documentation website. The website uses Node 24.
+
+## Server rendering
+
+The **0.3.4 published build reads browser storage at module scope**. In an SSR framework, dynamically import it on the client. Do not place a static import in a server-rendered component or execute storage operations in Cloudflare Pages build code.
+
+The upcoming 1.0 branch changes import behavior; see the [preview](/docs/next) rather than assuming it applies to 0.3.4.
+
+## TypeScript and bundlers
+
+Types ship with the package. Use a bundler that understands ES modules and include DOM types for browser code. The package's CDN/minified bundle is not a documented supported installation path here: the existing bundle script and exports are tracked in [library #26](https://github.com/OSSAfrica/bvault-js/issues/26) and [#27](https://github.com/OSSAfrica/bvault-js/issues/27).
+
+Continue with the [quick start](/docs/getting-started/quick-start).

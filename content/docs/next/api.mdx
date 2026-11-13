@@ -1,0 +1,45 @@
+---
+title: '1.0 API preview'
+description: 'The upcoming storage API, lifecycle, and error behavior.'
+---
+
+**Unreleased preview:** verify the published release before using this API. [Stable 0.3.4 docs](/docs/core-api/secure-storage) describe a different interface.
+
+## Public surface
+
+- `initializeSecureStorage(): Promise<void>` loads or creates the origin's key and invokes legacy cleanup. Await it before set/get.
+- `secureLocalStorage` and `secureSessionStorage` expose `setItem(key, value): Promise<void>`, `getItem(key): Promise<string | null>`, `removeItem(key): void`, and `clear(): void`.
+- `isSecureStorageInitialized(): boolean` reports the current module's state.
+- `destroySecureStorage(): Promise<void>` clears owned entries in localStorage and this tab's sessionStorage, deletes the key, and resets local initialization state.
+- `EncryptionError` and `DecryptionError` remain public error classes. Public encrypt/decrypt functions are removed.
+
+## Values and ownership
+
+Objects are JSON-stringified; other inputs use string conversion. Reads return strings, so guard against null before JSON.parse. The proposed typed JSON helpers and key enumeration are not implemented APIs; see [#15](https://github.com/OSSAfrica/bvault-js/issues/15) and [#16](https://github.com/OSSAfrica/bvault-js/issues/16).
+
+Values use `bv1:`-prefixed keys and carry version/IV/ciphertext information in the payload. Do not manually rewrite the internal payload. Clear/remove operate on owned keys rather than wiping unrelated entries.
+
+## Failures
+
+Crypto/serialization failures during setItem are wrapped in EncryptionError. Storage quota/security errors propagate unchanged. Initialization and access to missing/blocked browser APIs can reject or throw. GetItem returns null for decryption failures and preserves ciphertext; null also means absent data.
+
+```typescript
+// Upcoming 1.0 only. Run from your application's browser lifecycle.
+import { initializeSecureStorage, secureLocalStorage, destroySecureStorage } from 'bvault-js';
+
+export async function demonstrateCacheLifecycle() {
+  await initializeSecureStorage();
+  await secureLocalStorage.setItem('example', { enabled: true });
+  const value = await secureLocalStorage.getItem('example');
+  const example = value === null ? null : JSON.parse(value);
+  secureLocalStorage.removeItem('example');
+  await destroySecureStorage();
+  return example;
+}
+```
+
+The destruction method is irreversible for data whose only key is deleted; use it as part of an explicitly designed logout/account-switch policy. It does not guarantee other tabs have discarded in-memory handles. Concurrent initialization and IndexedDB lifecycle fixes remain tracked work; read [known limitations](/docs/security).
+
+## SSR
+
+The upcoming module is safe to import in SSR, but initialize/set/get/remove/clear/destroy still require a browser environment. Never run them in a TanStack server function, a Cloudflare Pages build, or during a server render.
