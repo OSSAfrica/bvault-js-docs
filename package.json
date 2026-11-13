@@ -5,15 +5,18 @@
   "sideEffects": false,
   "scripts": {
     "dev": "vite dev --host 127.0.0.1",
-    "build": "vite build && node scripts/prepare-pages.mjs",
+    "build": "vite build && bun scripts/prepare-pages.mjs",
     "typecheck": "tsc --noEmit",
     "check-format": "prettier --check .",
     "format": "prettier --write .",
-    "check:content": "node scripts/check-content.mjs",
+    "check:content": "bun scripts/check-content.mjs",
     "test:smoke": "playwright test",
-    "ci": "npm run check-format && npm run build && npm run typecheck && npm run check:content && npm run test:smoke",
+    "ci": "bun run check-format && bun run build && bun run typecheck && bun run check:content && bun run test:smoke",
     "preview": "wrangler pages dev dist/client --port 4173",
-    "deploy": "npm run build && wrangler pages deploy dist/client --project-name bvault-js-docs"
+    "deploy": "bun run build && wrangler pages deploy dist/client --project-name bvault-js-docs",
+    "start": "bun run dev",
+    "dev:open": "vite dev --host 127.0.0.1 --open /docs/introduction",
+    "preview:build": "bun run build && bun run preview"
   },
   "dependencies": {
     "@tanstack/react-router": "1.170.46",
@@ -42,6 +45,8 @@
   },
   "version": "0.0.0",
   "engines": {
-    "node": ">=22.13.0"
-  }
+    "node": ">=22.13.0",
+    "bun": ">=1.4.4"
+  },
+  "packageManager": "bun@1.4.4"
 }

@@ -1,4 +1,4 @@
-package-lock.json
+bun.lock
 node_modules
 dist
 .tanstack
