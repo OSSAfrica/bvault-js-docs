@@ -29,6 +29,16 @@ test('search works from the exported index and Escape closes it', async ({ page 
   ).toBeVisible();
   await page.keyboard.press('Escape');
   await expect(dialog).not.toBeVisible();
+  await page
+    .getByRole('button', { name: /search/i })
+    .first()
+    .click();
+  await dialog.getByRole('combobox', { name: 'Search' }).fill('fingerprint');
+  await expect(dialog.getByRole('option').first()).toContainText('Security and limitations');
+  await page.keyboard.press('Enter');
+  await expect(
+    page.getByRole('heading', { name: 'Security and limitations', exact: true }),
+  ).toBeVisible();
 });
 
 test('legacy URLs redirect and missing pages have a real 404', async ({ request }) => {
