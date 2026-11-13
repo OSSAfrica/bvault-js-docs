@@ -1,0 +1,202 @@
+@import 'tailwindcss';
+@import 'fumadocs-ui/css/neutral.css';
+@import 'fumadocs-ui/css/preset.css';
+
+:root {
+  --color-fd-primary: #146c54;
+  --color-fd-primary-foreground: #ffffff;
+}
+.dark {
+  --color-fd-primary: #89d8b9;
+  --color-fd-primary-foreground: #102c22;
+}
+body {
+  font-family: 'Avenir Next', 'Segoe UI', sans-serif;
+}
+a,
+button,
+input {
+  outline-offset: 4px;
+}
+.landing {
+  width: min(1180px, 100%);
+  margin: 0 auto;
+  padding: 0 32px;
+}
+.hero-grid {
+  display: grid;
+  grid-template-columns: 1.05fr 1fr;
+  gap: 60px;
+  padding: 105px 0 85px;
+  align-items: center;
+}
+.eyebrow {
+  font-family: ui-monospace, monospace;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  color: var(--color-fd-muted-foreground);
+  margin-bottom: 25px;
+}
+.hero-grid h1 {
+  font-family: 'Iowan Old Style', 'Palatino Linotype', Palatino, serif;
+  font-size: clamp(42px, 4.5vw, 64px);
+  line-height: 1.05;
+  letter-spacing: -0.035em;
+  font-weight: 500;
+}
+.hero-grid h1 span {
+  color: var(--color-fd-primary);
+}
+.hero-description {
+  font-size: 17px;
+  line-height: 1.75;
+  color: var(--color-fd-muted-foreground);
+  max-width: 470px;
+  margin-top: 24px;
+}
+.hero-actions {
+  display: flex;
+  gap: 22px;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-top: 30px;
+}
+.primary-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--color-fd-primary);
+  color: var(--color-fd-primary-foreground);
+  padding: 12px 18px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 600;
+}
+.quiet-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  font-size: 13px;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+.release-note {
+  margin-top: 23px;
+  font-size: 12px;
+  color: var(--color-fd-muted-foreground);
+}
+.release-note span {
+  padding: 0 9px;
+}
+.release-note a {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.code-window {
+  background: #102c25;
+  color: #d9e9df;
+  border: 1px solid #33594a;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 18px 60px #102c2515;
+}
+.code-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 15px 22px;
+  border-bottom: 1px solid #ffffff1c;
+  font-family: ui-monospace, monospace;
+  font-size: 12px;
+}
+.code-title > span:last-child {
+  margin-left: auto;
+  color: #a7c5b7;
+}
+.status-dot {
+  display: block;
+  width: 7px;
+  height: 7px;
+  background: #a4dcba;
+  border-radius: 50%;
+}
+.code-window pre {
+  padding: 25px 22px;
+  overflow-x: auto;
+  font-size: 12px;
+  line-height: 1.95;
+}
+.code-footer {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  border-top: 1px solid #ffffff1c;
+  padding: 13px 22px;
+  color: #a7c5b7;
+  font-size: 11px;
+}
+.principles {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  border-block: 1px solid var(--color-fd-border);
+}
+.principles article {
+  padding: 32px 25px 35px;
+}
+.principles article:first-child {
+  padding-left: 0;
+}
+.principles article + article {
+  border-left: 1px solid var(--color-fd-border);
+}
+.principles svg {
+  color: var(--color-fd-primary);
+  margin-bottom: 17px;
+}
+.principles h2 {
+  font-size: 16px;
+  font-weight: 600;
+}
+.principles p {
+  color: var(--color-fd-muted-foreground);
+  font-size: 14px;
+  line-height: 1.8;
+  margin-top: 8px;
+}
+.landing-footer {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 30px 0;
+  color: var(--color-fd-muted-foreground);
+  font-size: 12px;
+}
+.landing-footer a {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+@media (max-width: 850px) {
+  .hero-grid {
+    grid-template-columns: 1fr;
+    gap: 35px;
+    padding: 55px 0;
+  }
+  .principles {
+    grid-template-columns: 1fr;
+  }
+  .principles article,
+  .principles article:first-child {
+    padding: 25px 0;
+  }
+  .principles article + article {
+    border-left: 0;
+    border-top: 1px solid var(--color-fd-border);
+  }
+  .landing {
+    padding: 0 22px;
+  }
+  .landing-footer {
+    flex-wrap: wrap;
+  }
+}

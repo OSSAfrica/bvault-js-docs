@@ -1,0 +1,38 @@
+---
+title: 'Encryption API'
+description: 'Low-level password-based encryption in stable 0.3.4 only.'
+---
+
+These functions are exported by **0.3.4** and removed from the upcoming 1.0 public API. Use them only when your installed version supports them.
+
+## encrypt(data, password)
+
+`(data: string, password: string) => Promise<EncryptionResult>`
+
+```typescript
+interface EncryptionResult {
+  encryptedData: string;
+  iv: string;
+  salt: string;
+}
+
+export async function roundTrip(message: string, password: string) {
+  const { encrypt, decrypt } = await import('bvault-js');
+  const result = await encrypt(message, password);
+  return decrypt(result.encryptedData, password, result.iv, result.salt);
+}
+```
+
+The result carries Base64-encoded ciphertext, IV, and salt. To decrypt later, preserve all three parameters and supply the same password. Never log the plaintext or password in an example intended for production.
+
+## decrypt(encryptedData, password, iv, salt)
+
+Returns `Promise<string>` and rejects on failure. This is distinct from storage-wrapper getItem behavior, which catches decryption failures. Handle `EncryptionError` and `DecryptionError` around the low-level operations where appropriate.
+
+## Security boundaries
+
+The 0.3.4 implementation uses AES-GCM with PBKDF2 password derivation. Your application's password source is part of its security design. A hardcoded password, public build variable, or browser fingerprint is not a secret.
+
+JavaScript does not provide reliable string memory erasure. Reassigning a string or forcing garbage collection does not guarantee that plaintext/password copies are erased.
+
+Read [security and limitations](/docs/security) and the [1.0 upgrade guide](/docs/guides/migrating-to-1) before adopting an older API for new work.

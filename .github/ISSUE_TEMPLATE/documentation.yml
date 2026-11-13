@@ -1,0 +1,25 @@
+name: Documentation problem
+description: Report incorrect content or a broken docs experience
+title: 'docs: '
+labels: [documentation]
+body:
+  - type: input
+    id: page
+    attributes:
+      label: Page URL
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Docs and bvault-js version
+      description: Include whether you are reading stable or preview documentation.
+    validations:
+      required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: Expected behavior and actual problem
+      description: Include reproduction steps, browser, and suggested correction when useful.
+    validations:
+      required: true

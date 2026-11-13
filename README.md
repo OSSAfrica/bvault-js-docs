@@ -1,41 +1,56 @@
-# Website
+# bVault-js documentation
 
-This website is built using [Docusaurus](https://docusaurus.io/), a modern static website generator.
+Documentation for [bvault-js](https://github.com/OSSAfrica/bvault-js), built with Fumadocs, TanStack Start, React, and MDX. The production build is prerendered static HTML for **Cloudflare Pages**; search runs in the browser from an exported index. No server runtime is needed in production.
 
-## Installation
+## Development
 
-```bash
-yarn
-```
-
-## Local Development
+Use Node 24 (`nvm use`) and npm. The committed lockfile is authoritative.
 
 ```bash
-yarn start
+npm ci
+npm run dev
 ```
 
-This command starts a local development server and opens up a browser window. Most changes are reflected live without having to restart the server.
-
-## Build
+The dev server listens on http://localhost:3000. Run `npm run build`, then `npm run preview` to test the real static output with Cloudflare Pages locally at http://localhost:4173.
 
 ```bash
-yarn build
+npx playwright install chromium
+npm run ci
 ```
 
-This command generates static content into the `build` directory and can be served using any static contents hosting service.
+CI runs formatting, a production build (which generates route types), typechecking, rendered-page/link/asset checks, and desktop/mobile Chromium smoke tests including search, redirects, and 404s. `npm run format` applies formatting. CodeQL uses GitHub's default setup; do not add a duplicate advanced CodeQL workflow. Security and dependency-review workflows follow the library repo. Signed commits and one PR approval are required, with DCO sign-off checked separately.
 
-## Deployment
+## Writing docs
 
-Using SSH:
+- Pages live in `content/docs`; `meta.json` controls section order.
+- The filename determines the URL. `index.mdx` is its folder's landing page.
+- Use `title` and `description` frontmatter. Fumadocs MDX components come from `src/components/mdx.tsx`; Docusaurus `:::` syntax is no longer supported.
+- Keep runnable examples aligned with a published version. Stable docs target 0.3.4; `content/docs/next` is explicitly upcoming 1.0. Do not present branch-only exports as npm latest.
+- Content changes automatically rebuild the search index. Update `public/_redirects` whenever a published URL changes. `scripts/check-content.mjs` checks rendered internal links/anchors and assets.
+- Static assets live in `public`. Existing logos and social images retain `/img/...` URLs.
 
-```bash
-USE_SSH=true yarn deploy
-```
+## Cloudflare Pages
 
-Not using SSH:
+Create or connect the **OSSAfrica/bvault-js-docs** repository in Cloudflare Pages with:
 
-```bash
-GIT_USER=<Your GitHub username> yarn deploy
-```
+| Setting           | Value           |
+| ----------------- | --------------- |
+| Framework preset  | None            |
+| Production branch | `main`          |
+| Build command     | `npm run build` |
+| Output directory  | `dist/client`   |
+| Node version      | `24`            |
 
-If you are using GitHub pages for hosting, this command is a convenient way to build the website and push to the `gh-pages` branch.
+Enable preview builds for contribution branches according to the organization's fork policy. CI can run without Cloudflare credentials. This repository does not automatically deploy from GitHub Actions or ship a server bundle to Pages.
+
+Set `VITE_SITE_URL` to the confirmed HTTPS production origin before launch. It supplies canonical metadata and the sitemap. Builds without it are intentionally unindexed; previews are blocked through Pages headers and branch-aware robots. Never put secrets in a `VITE_` variable.
+
+For an existing direct-upload project, `npm run deploy` builds and uploads through Wrangler to `bvault-js-docs`; confirm that project belongs to the intended account before running it. Git-integrated Pages projects should use their configured Git deployment path instead.
+
+Before cutover, check homepage, all deep links, search, mobile navigation, redirects, and missing-page status on a Pages preview. Record a known-good deployment; use Pages' deployment rollback if a production release fails. Keep the old Vercel deployment available until hostname redirects are ready. The maintainer is handling Vercel's dashboard switch; `vercel.json` also disables future automatic Git deployments once present on a branch. The Docusaurus PostHog plugin was removed; analytics are deliberately disabled until a separate reviewed configuration is supplied.
+
+See the [migration tracker](https://github.com/OSSAfrica/bvault-js-docs/issues/2) and [Cloudflare Pages deployment issue](https://github.com/OSSAfrica/bvault-js-docs/issues/11) for launch ownership and remaining work.
+
+## Contributing
+
+Follow the [organization contribution guide](https://github.com/OSSAfrica/.github/blob/main/CONTRIBUTING.md) and [Code of Conduct](https://github.com/OSSAfrica/.github/blob/main/CODE_OF_CONDUCT.md). Include DCO sign-off (`git commit -s`, see [DCO.md](DCO.md)) and a valid commit signature, use a conventional commit title, and open a PR with the checks above. Use the documentation issue form for content errors; follow the organization security policy for private vulnerability reports.

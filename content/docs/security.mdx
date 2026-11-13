@@ -1,0 +1,38 @@
+---
+title: 'Security and limitations'
+description: 'What browser storage encryption can protect, and what your app still needs to handle.'
+---
+
+## Start with the version
+
+Stable 0.3.4 uses an application-supplied password and holds it in JavaScript memory. Upcoming 1.0 uses a generated, non-extractable AES-GCM key persisted in IndexedDB. Their guarantees and failure behavior differ; the upcoming model must not be attributed to the npm 0.3.4 package.
+
+## A browser fingerprint is not a password
+
+The previous docs recommended ThumbmarkJS/FingerprintJS as a key source. That recommendation is withdrawn. A fingerprint is not a secret: code in the same environment can compute it, and environmental changes can make it unstable. A hardcoded password or client-exposed environment variable has the same secrecy problem.
+
+## Same-origin code can access your data
+
+An active script running in your origin can call the library or Web Crypto with a reachable key handle. Encryption at rest in browser storage does not prevent live XSS, enforce server authorization, or make JavaScript-readable session tokens inaccessible to injected scripts. Prefer an appropriate HttpOnly-cookie authentication design where applicable, and continue preventing XSS.
+
+For upcoming 1.0, non-extractability prevents exporting raw key material through the Web Crypto API. It is not a promise of hardware-backed storage or protection against someone who can copy/read the browser profile files. See the [library's threat-model explanation](https://github.com/OSSAfrica/bvault-js/blob/main/docs/how-bvault-works.md).
+
+## Storage and key loss
+
+Browsers can evict or clear site storage, deny storage APIs, and impose retention policies. IndexedDB metadata loss breaks 0.3.4 reads. Loss of the upcoming 1.0 persisted key makes its ciphertext unreadable. A persistence request is best-effort, not a backup or recovery mechanism.
+
+Do not use browser storage as the sole copy of irreplaceable data. Plan for refetching, reauthentication, and an initialization-failure state. Origin changes (scheme/host/port) also change which browser storage an application sees.
+
+## Known upcoming-version limits
+
+These are open library work, not features supplied by the docs migration:
+
+- [#8: concurrent initialization](https://github.com/OSSAfrica/bvault-js/issues/8): avoid launching multiple independent initializations; do not assume an open fix PR has shipped.
+- [#9: cross-tab destruction](https://github.com/OSSAfrica/bvault-js/issues/9): another tab can retain an in-memory key after destruction. Do not promise global logout/revocation.
+- [#10: IndexedDB lifecycle](https://github.com/OSSAfrica/bvault-js/issues/10): blocked upgrades and schema recovery need work.
+- [#12: payload binding](https://github.com/OSSAfrica/bvault-js/issues/12): ciphertext substitution and rollback are not currently prevented by a storage-key binding feature.
+- [#13: hardware-backed research](https://github.com/OSSAfrica/bvault-js/issues/13): WebAuthn PRF is a proposal, not a supported option.
+
+## Reporting a vulnerability
+
+Use the [organization security policy](https://github.com/OSSAfrica/.github/blob/main/SECURITY.md) and private reporting rather than putting sensitive reproduction details in a public docs issue.

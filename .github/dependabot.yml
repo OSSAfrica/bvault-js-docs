@@ -1,0 +1,15 @@
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+    groups:
+      tanstack:
+        patterns: ['@tanstack/*']
+      fumadocs:
+        patterns: ['fumadocs-*', '@fumadocs/*']
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
