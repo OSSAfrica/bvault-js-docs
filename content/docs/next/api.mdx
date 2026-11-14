@@ -38,7 +38,7 @@ export async function demonstrateCacheLifecycle() {
 }
 ```
 
-The destruction method is irreversible for data whose only key is deleted; use it as part of an explicitly designed logout/account-switch policy. It does not guarantee other tabs have discarded in-memory handles. Concurrent initialization and IndexedDB lifecycle fixes remain tracked work; read [known limitations](/docs/security).
+The destruction method is irreversible for data whose only key is deleted; use it as part of an explicitly designed logout/account-switch policy. In this published **preview.0** version, it does not guarantee other tabs have discarded in-memory handles. The cross-tab fix is merged for staged **preview.1**; read [next preview lifecycle behavior](/docs/next/development#cross-tab-destruction). Concurrent initialization and IndexedDB lifecycle fixes remain pending; read [known limitations](/docs/security).
 
 ## SSR
 

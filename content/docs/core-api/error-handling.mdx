@@ -34,4 +34,6 @@ Treat browser storage as a cache for data you can recover elsewhere. Catch initi
 
 The preview wrapper returns null on decryption failure **without deleting ciphertext**. Errors obtaining storage or initializing may still throw; quota/security failures from writes propagate unchanged, while crypto/serialization failures become EncryptionError. See the [preview API](/docs/next/api).
 
+The staged preview.1 implementation adds key-lifecycle rejections after cross-tab destruction, as well as failures when destruction cannot write its coordination marker. These are separate from a decryption failure returning null. See [next preview lifecycle behavior](/docs/next/development#cross-tab-destruction); these changes are not yet included in the published preview.0 package.
+
 The proposed ability to distinguish missing from undecryptable is tracked in [library #14](https://github.com/OSSAfrica/bvault-js/issues/14). Do not write examples using that feature until an implementation is released.

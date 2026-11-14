@@ -36,6 +36,6 @@ Rolling the package version back does not restore deleted data. Do not assume a 
 
 ## Logout and key loss
 
-The preview destruction API deletes the key, so ciphertext under it cannot be recovered without that key. The current implementation does not revoke other tabs' cached key handles; see [library #9](https://github.com/OSSAfrica/bvault-js/issues/9). An application should not promise complete cross-tab logout based only on calling the new method.
+The preview destruction API deletes the key, so ciphertext under it cannot be recovered without that key. In the published **preview.0** version, other tabs can retain cached key handles. [Library #9](https://github.com/OSSAfrica/bvault-js/issues/9) is fixed in the source staged for **preview.1**, pending npm approval; see [cross-tab lifecycle changes](/docs/next/development#cross-tab-destruction). Applications must still coordinate their own authentication/account state rather than treating key deletion as server-side session revocation.
 
 Review the [actual migration source](https://github.com/OSSAfrica/bvault-js/blob/bvault-js%401.0.0-preview.0/src/lib/migration.ts) and [tests](https://github.com/OSSAfrica/bvault-js/blob/bvault-js%401.0.0-preview.0/test/migration.test.ts), along with the [preview API](/docs/next/api).
