@@ -1,16 +1,40 @@
 ---
 title: '1.0 preview'
-description: 'Passwordless encrypted browser storage on library main; not the stable npm API.'
+description: 'Install and try bvault-js 1.0.0-preview.0, the published passwordless storage prerelease.'
 ---
 
-## This API is upcoming
+## Published prerelease
 
-At migration assessment, npm latest is **0.3.4**. The following describes library main and must not be copied into an application installed with `bvault-js@0.3.4`. Publication is tracked in [library #29](https://github.com/OSSAfrica/bvault-js/issues/29).
+**bvault-js 1.0.0-preview.0 is available on the `preview` npm tag.** The `latest` tag remains **0.3.4**, so the default documentation still describes the stable password-based API.
 
-The new model generates a non-extractable AES-GCM key, persists it in IndexedDB, and reuses it across page loads for the same origin. Applications do not supply a password. General-purpose encrypt/decrypt are removed from the public surface.
+This section documents the published preview artifact. Read the [prerelease notes](https://github.com/OSSAfrica/bvault-js/releases/tag/bvault-js%401.0.0-preview.0) for the release details. Stable 1.0.0 is still tracked in [library #29](https://github.com/OSSAfrica/bvault-js/issues/29).
+
+Before upgrading an existing application, read the [migration guide](/docs/guides/migrating-to-1): the first preview initialization removes legacy values identified by 0.x metadata. Try the preview in an isolated origin or browser profile before upgrading data you need to preserve.
+
+## Install the preview
+
+With Bun:
+
+```bash
+bun add bvault-js@preview
+```
+
+With npm:
+
+```bash
+npm install bvault-js@preview
+```
+
+To keep a trial on this exact release, use `bun add bvault-js@1.0.0-preview.0` or `npm install bvault-js@1.0.0-preview.0`. The `preview` tag can move to later prereleases.
+
+## Initialize and use browser storage
+
+The preview generates a non-extractable AES-GCM key, persists it in IndexedDB, and reuses it across page loads for the same origin. Applications do not supply a password. Public `encrypt` and `decrypt` functions have been removed.
+
+Run initialization and storage operations in the browser:
 
 ```typescript
-// Upcoming 1.0 only. Not executable with the published 0.3.4 artifact.
+// bvault-js@1.0.0-preview.0
 import { initializeSecureStorage, secureLocalStorage } from 'bvault-js';
 
 await initializeSecureStorage();
@@ -19,4 +43,6 @@ const value = await secureLocalStorage.getItem('preferences');
 const preferences = value === null ? null : JSON.parse(value);
 ```
 
-Non-extractability restricts exporting raw key bytes through Web Crypto; it does not prevent active same-origin scripts from using a reachable key handle. Key loss means data loss. Read the [security model](/docs/security), [upgrade guide](/docs/guides/migrating-to-1), and [preview API](/docs/next/api).
+Non-extractability restricts exporting raw key bytes through Web Crypto; it does not prevent active same-origin scripts from using a reachable key handle. Key loss means data loss. Read the [security model](/docs/security), [migration guide](/docs/guides/migrating-to-1), and [preview API](/docs/next/api).
+
+The preview does not include every change currently proposed for 1.0. In particular, the concurrent-initialization fix in [PR #54](https://github.com/OSSAfrica/bvault-js/pull/54) remains pending; use a single initialization entry point. See [known preview limitations](/docs/security#known-preview-limitations) for the other tracked issues.

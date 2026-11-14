@@ -45,7 +45,7 @@ function Home() {
             <p className="release-note">
               Stable: 0.3.4 <span> / </span>{' '}
               <Link to="/docs/$" params={{ _splat: 'next' }}>
-                Explore the upcoming 1.0 API
+                Try the published 1.0 preview
               </Link>
             </p>
           </div>
