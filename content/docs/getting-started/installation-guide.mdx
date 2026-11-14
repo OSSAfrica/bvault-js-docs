@@ -5,15 +5,65 @@ description: 'Install the published 0.3.4 package and check browser requirements
 
 ## Install stable 0.3.4
 
+<Tabs groupId="package-manager" persist items={['npm', 'pnpm', 'Bun']}>
+
+<Tab value="npm">
+
 ```bash
 npm install bvault-js@0.3.4
 ```
 
-You can also use `pnpm add bvault-js@0.3.4` or `yarn add bvault-js@0.3.4`. The explicit version keeps these examples aligned with the published password-based API. Check `npm view bvault-js version` before choosing a newer release.
+</Tab>
+
+<Tab value="pnpm">
+
+```bash
+pnpm add bvault-js@0.3.4
+```
+
+</Tab>
+
+<Tab value="Bun">
+
+```bash
+bun add bvault-js@0.3.4
+```
+
+</Tab>
+</Tabs>
+
+The explicit version keeps these examples aligned with the published password-based API. Your selected package manager is remembered across installation tabs.
 
 ## Try the 1.0 prerelease
 
-The `preview` tag currently selects **1.0.0-preview.0**. Install it with `bun add bvault-js@preview` or `npm install bvault-js@preview`, then follow the [preview quick start](/docs/next). Installing without a version or tag still selects stable 0.3.4.
+The `preview` tag currently selects **1.0.0-preview.0**. Choose your package manager below, then follow the [preview quick start](/docs/next). Installing without a version or tag still selects stable 0.3.4.
+
+<Tabs groupId="package-manager" persist items={['npm', 'pnpm', 'Bun']}>
+
+<Tab value="npm">
+
+```bash
+npm install bvault-js@preview
+```
+
+</Tab>
+
+<Tab value="pnpm">
+
+```bash
+pnpm add bvault-js@preview
+```
+
+</Tab>
+
+<Tab value="Bun">
+
+```bash
+bun add bvault-js@preview
+```
+
+</Tab>
+</Tabs>
 
 The preview has a different API. Read the [migration guide](/docs/guides/migrating-to-1) before initializing it against existing 0.x data; initialization removes identified legacy values.
 

@@ -13,19 +13,63 @@ Before upgrading an existing application, read the [migration guide](/docs/guide
 
 ## Install the preview
 
-With Bun:
+<Tabs groupId="package-manager" persist items={['npm', 'pnpm', 'Bun']}>
 
-```bash
-bun add bvault-js@preview
-```
-
-With npm:
+<Tab value="npm">
 
 ```bash
 npm install bvault-js@preview
 ```
 
-To keep a trial on this exact release, use `bun add bvault-js@1.0.0-preview.0` or `npm install bvault-js@1.0.0-preview.0`. The `preview` tag can move to later prereleases.
+</Tab>
+
+<Tab value="pnpm">
+
+```bash
+pnpm add bvault-js@preview
+```
+
+</Tab>
+
+<Tab value="Bun">
+
+```bash
+bun add bvault-js@preview
+```
+
+</Tab>
+</Tabs>
+
+### Pin this prerelease
+
+The `preview` tag can move to later prereleases. To keep a trial on this exact release, install the version below:
+
+<Tabs groupId="package-manager" persist items={['npm', 'pnpm', 'Bun']}>
+
+<Tab value="npm">
+
+```bash
+npm install bvault-js@1.0.0-preview.0
+```
+
+</Tab>
+
+<Tab value="pnpm">
+
+```bash
+pnpm add bvault-js@1.0.0-preview.0
+```
+
+</Tab>
+
+<Tab value="Bun">
+
+```bash
+bun add bvault-js@1.0.0-preview.0
+```
+
+</Tab>
+</Tabs>
 
 ## Initialize and use browser storage
 
