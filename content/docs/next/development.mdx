@@ -21,7 +21,7 @@ This page describes [library main at bc9a130](https://github.com/OSSAfrica/bvaul
 
 [PR #64](https://github.com/OSSAfrica/bvault-js/pull/64) fixes [issue #9](https://github.com/OSSAfrica/bvault-js/issues/9) in the staged preview.1 source. After one same-origin tab calls `destroySecureStorage()`:
 
-- Other initialized tabs invalidate their active key and cached key, and attempt to clear their own bVault sessionStorage values. Unrelated storage is preserved.
+- Other initialized tabs using the updated library invalidate their active key and cached key, and attempt to clear their own bVault sessionStorage values. Unrelated storage is preserved.
 - `getItem` and `setItem` reject until the affected tab is initialized again. An asynchronous read/write also checks its key after cryptography finishes and rejects if it detects invalidation during the operation.
 - Initialization checks for a revision change while loading the key. It rejects while destruction is marked in progress.
 
