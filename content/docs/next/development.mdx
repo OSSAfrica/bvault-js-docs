@@ -1,25 +1,25 @@
 ---
-title: 'Next preview changes'
-description: 'Staged preview.1 lifecycle fixes, native browser tests, and the working browser playground.'
+title: 'Preview lifecycle and tooling'
+description: 'Published preview.1 lifecycle behavior, native browser tests, and the working browser playground.'
 ---
 
 ## Release status
 
-As checked on **14 November 2026**, the npm channels are:
+As checked on **14 November 2026**, npm's `preview` tag selects **1.0.0-preview.1**. Approval is complete and the package is publicly available. The stable `latest` tag remains **0.3.4**.
 
-| Channel or version  | Status                         | What it contains                                                                            |
-| ------------------- | ------------------------------ | ------------------------------------------------------------------------------------------- |
-| `latest`            | Published: **0.3.4**           | Password-based API; the stable guides target this version                                   |
-| `preview`           | Published: **1.0.0-preview.0** | Passwordless API, before the cross-tab destruction fix                                      |
-| **1.0.0-preview.1** | Staged, awaiting npm approval  | The cross-tab fix; browser tests, playground, and bundle tooling are in its source checkout |
+| Channel or version  | Status                         | Behavior                                                  |
+| ------------------- | ------------------------------ | --------------------------------------------------------- |
+| `latest`            | Published: **0.3.4**           | Password-based API; the stable guides target this version |
+| `preview`           | Published: **1.0.0-preview.1** | Passwordless API with cross-tab key-cache invalidation    |
+| **1.0.0-preview.0** | Older prerelease               | Passwordless API before the cross-tab destruction fix     |
 
-The installation tabs still target the published `preview` tag and can pin `1.0.0-preview.0`. Staging a package does not move that tag. Until npm approval and publication are complete, use a source checkout to try the changes below; do not assume `bvault-js@preview` includes them.
+The installation tabs use `@preview` or pin `1.0.0-preview.1`. See the [published package](https://www.npmjs.com/package/bvault-js/v/1.0.0-preview.1), [changelog](https://github.com/OSSAfrica/bvault-js/blob/bc9a13006513a06d0fd5059aeb63e6c6680d91a9/CHANGELOG.md), and [preview installation guide](/docs/next).
 
-This page describes [library main at bc9a130](https://github.com/OSSAfrica/bvault-js/blob/bc9a13006513a06d0fd5059aeb63e6c6680d91a9/package.json), the source prepared for preview.1. See the [published preview guide](/docs/next) for registry installation instructions.
+The source links below are pinned to [the preview.1 source revision](https://github.com/OSSAfrica/bvault-js/blob/bc9a13006513a06d0fd5059aeb63e6c6680d91a9/package.json). The browser playground and test/tooling files are source-checkout resources; they are not shipped as an application inside the npm package.
 
 ## Cross-tab destruction
 
-[PR #64](https://github.com/OSSAfrica/bvault-js/pull/64) fixes [issue #9](https://github.com/OSSAfrica/bvault-js/issues/9) in the staged preview.1 source. After one same-origin tab calls `destroySecureStorage()`:
+[PR #64](https://github.com/OSSAfrica/bvault-js/pull/64) fixes [issue #9](https://github.com/OSSAfrica/bvault-js/issues/9) in the published preview.1 package. After one same-origin tab calls `destroySecureStorage()`:
 
 - Other initialized tabs using the updated library invalidate their active key and cached key, and attempt to clear their own bVault sessionStorage values. Unrelated storage is preserved.
 - `getItem` and `setItem` reject until the affected tab is initialized again. An asynchronous read/write also checks its key after cryptography finishes and rejects if it detects invalidation during the operation.
@@ -31,7 +31,7 @@ Your app must handle these rejections and decide whether its authentication/acco
 
 Destruction needs write access to the localStorage coordination marker, including for applications using the session wrapper. If writing that marker fails, destruction rejects before deleting the IndexedDB key; values cleared earlier in the call may already be gone. Handle a failed destruction call explicitly rather than treating it as a completed logout. See the [lifecycle implementation](https://github.com/OSSAfrica/bvault-js/blob/bc9a13006513a06d0fd5059aeb63e6c6680d91a9/src/lib/key-lifecycle.ts) and [storage wrapper](https://github.com/OSSAfrica/bvault-js/blob/bc9a13006513a06d0fd5059aeb63e6c6680d91a9/src/lib/secure-storage.ts).
 
-The published preview.0 package still has the old cross-tab behavior. These changes also do **not** fix [concurrent first-run initialization (#8 / PR #54)](https://github.com/OSSAfrica/bvault-js/pull/54) or [IndexedDB blocked/versionchange handling (#10)](https://github.com/OSSAfrica/bvault-js/issues/10).
+The older preview.0 package still has the old cross-tab behavior. Preview.1 does **not** fix [concurrent first-run initialization (#8 / PR #54)](https://github.com/OSSAfrica/bvault-js/pull/54) or [IndexedDB blocked/versionchange handling (#10)](https://github.com/OSSAfrica/bvault-js/issues/10).
 
 ## Run the browser playground
 
@@ -51,4 +51,4 @@ These checks exercise the current source, not every historical npm release or ev
 
 From the library checkout, `npm run bundle` now builds TypeScript and generates **dist/bvault.min.js** as a browser ESM bundle using a declared esbuild dependency. The playground's import map loads that local bundle. [PR #63](https://github.com/OSSAfrica/bvault-js/pull/63) delivered the example, browser-test matrix, and bundle-script fix.
 
-This documents a build-from-source workflow. It does not guarantee that a minified bundle is present at a CDN URL for any published version. For installed packages, use the [package-manager tabs](/docs/next#install-the-preview) and your application's bundler.
+The published **1.0.0-preview.1** npm artifact contains the typed ESM entry point but does not include **dist/bvault.min.js**. Generate that minified bundle from the source checkout when needed. For installed packages, use the [package-manager tabs](/docs/next#install-the-preview) and your application's bundler; these instructions do not rely on a CDN bundle URL.

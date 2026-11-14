@@ -1,15 +1,15 @@
 ---
 title: '1.0 preview'
-description: 'Install and try bvault-js 1.0.0-preview.0, the published passwordless storage prerelease.'
+description: 'Install and try bvault-js 1.0.0-preview.1, the published passwordless storage prerelease.'
 ---
 
 ## Published prerelease
 
-**bvault-js 1.0.0-preview.0 is available on the `preview` npm tag.** The `latest` tag remains **0.3.4**, so the default documentation still describes the stable password-based API.
+**bvault-js 1.0.0-preview.1 is available on the `preview` npm tag.** The `latest` tag remains **0.3.4**, so the default documentation still describes the stable password-based API.
 
-The next prerelease, **1.0.0-preview.1**, is staged for npm approval. The cross-tab fix, native browser tests, and browser playground are merged in its source; see [next preview changes](/docs/next/development). They are not yet selected by the published `preview` tag.
+This release includes the cross-tab destruction fix. Read [preview lifecycle and tooling](/docs/next/development) for the new invalidation/error behavior, native browser coverage, and source playground instructions.
 
-This section documents the published preview artifact. Read the [prerelease notes](https://github.com/OSSAfrica/bvault-js/releases/tag/bvault-js%401.0.0-preview.0) for the release details. Stable 1.0.0 is still tracked in [library #29](https://github.com/OSSAfrica/bvault-js/issues/29).
+This section documents the published preview artifact. Read the [prerelease notes](https://github.com/OSSAfrica/bvault-js/blob/bc9a13006513a06d0fd5059aeb63e6c6680d91a9/CHANGELOG.md) for the release details. Stable 1.0.0 is still tracked in [library #29](https://github.com/OSSAfrica/bvault-js/issues/29).
 
 Before upgrading an existing application, read the [migration guide](/docs/guides/migrating-to-1): the first preview initialization removes legacy values identified by 0.x metadata. Try the preview in an isolated origin or browser profile before upgrading data you need to preserve.
 
@@ -51,7 +51,7 @@ The `preview` tag can move to later prereleases. To keep a trial on this exact r
 <Tab value="npm">
 
 ```bash
-npm install bvault-js@1.0.0-preview.0
+npm install bvault-js@1.0.0-preview.1
 ```
 
 </Tab>
@@ -59,7 +59,7 @@ npm install bvault-js@1.0.0-preview.0
 <Tab value="pnpm">
 
 ```bash
-pnpm add bvault-js@1.0.0-preview.0
+pnpm add bvault-js@1.0.0-preview.1
 ```
 
 </Tab>
@@ -67,7 +67,7 @@ pnpm add bvault-js@1.0.0-preview.0
 <Tab value="Bun">
 
 ```bash
-bun add bvault-js@1.0.0-preview.0
+bun add bvault-js@1.0.0-preview.1
 ```
 
 </Tab>
@@ -80,7 +80,7 @@ The preview generates a non-extractable AES-GCM key, persists it in IndexedDB, a
 Run initialization and storage operations in the browser:
 
 ```typescript
-// bvault-js@1.0.0-preview.0
+// bvault-js@1.0.0-preview.1
 import { initializeSecureStorage, secureLocalStorage } from 'bvault-js';
 
 await initializeSecureStorage();

@@ -36,7 +36,7 @@ The explicit version keeps these examples aligned with the published password-ba
 
 ## Try the 1.0 prerelease
 
-The `preview` tag currently selects **1.0.0-preview.0**. Choose your package manager below, then follow the [preview quick start](/docs/next). Installing without a version or tag still selects stable 0.3.4.
+The `preview` tag currently selects **1.0.0-preview.1**. Choose your package manager below, then follow the [preview quick start](/docs/next). Installing without a version or tag still selects stable 0.3.4.
 
 <Tabs groupId="package-manager" persist items={['npm', 'pnpm', 'Bun']}>
 
@@ -79,7 +79,7 @@ The library's browser requirements are separate from the Node version used to bu
 
 The **0.3.4 published build reads browser storage at module scope**. In an SSR framework, dynamically import it on the client. Do not place a static import in a server-rendered component or execute storage operations in Cloudflare Pages build code.
 
-The published 1.0.0-preview.0 package is safe to import under SSR, but storage operations still require a browser. See the [preview](/docs/next); this import behavior does not apply to 0.3.4.
+The published 1.0.0-preview.1 package is safe to import under SSR, but storage operations still require a browser. See the [preview](/docs/next); this import behavior does not apply to 0.3.4.
 
 ## TypeScript and bundlers
 
