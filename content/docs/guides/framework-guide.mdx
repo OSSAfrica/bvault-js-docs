@@ -80,6 +80,6 @@ export async function unlockFromSvelte(password: string) {
 }
 ```
 
-The [library working-example issue #30](https://github.com/OSSAfrica/bvault-js/issues/30) tracks a maintained runnable demo. The experimental Rust/WASM branch uses a separate older API and is not the source for current installation instructions.
+A maintained [plain HTML browser playground](https://github.com/OSSAfrica/bvault-js/blob/bc9a13006513a06d0fd5059aeb63e6c6680d91a9/examples/browser/README.md) is now merged in the library repository. It uses the current 1.0 preview source API, rather than the password-based 0.3.4 examples above. See [running the playground](/docs/next/development#run-the-browser-playground) for its source-versus-published version boundary and setup instructions.
 
 See [security](/docs/security), [read failures](/docs/core-api/error-handling), and the [1.0 upgrade guide](/docs/guides/migrating-to-1) before adding account-switch or logout flows.

@@ -25,13 +25,18 @@ Do not use browser storage as the sole copy of irreplaceable data. Plan for refe
 
 ## Known preview limitations
 
-These limitations and proposals remain tracked library work. Publishing a preview does not imply that they have been fixed or implemented:
+The following limitations and proposals remain tracked library work, including in the staged preview.1 source:
 
 - [#8: concurrent initialization](https://github.com/OSSAfrica/bvault-js/issues/8): avoid launching multiple independent initializations; do not assume an open fix PR has shipped.
-- [#9: cross-tab destruction](https://github.com/OSSAfrica/bvault-js/issues/9): another tab can retain an in-memory key after destruction. Do not promise global logout/revocation.
 - [#10: IndexedDB lifecycle](https://github.com/OSSAfrica/bvault-js/issues/10): blocked upgrades and schema recovery need work.
 - [#12: payload binding](https://github.com/OSSAfrica/bvault-js/issues/12): ciphertext substitution and rollback are not currently prevented by a storage-key binding feature.
 - [#13: hardware-backed research](https://github.com/OSSAfrica/bvault-js/issues/13): WebAuthn PRF is a proposal, not a supported option.
+
+### Cross-tab destruction by version
+
+The published **1.0.0-preview.0** package can leave another tab holding a deleted key after destruction. [Issue #9](https://github.com/OSSAfrica/bvault-js/issues/9) is now fixed on main by [PR #64](https://github.com/OSSAfrica/bvault-js/pull/64), prepared for **1.0.0-preview.1**, which is still awaiting npm approval.
+
+The staged implementation resets key state across tabs and checks for missed notifications before using a cached key. Applications must handle rejected reads/writes and failed destruction; this is not a server-session revocation mechanism. See [next preview lifecycle behavior](/docs/next/development#cross-tab-destruction) for the version boundary and application responsibilities.
 
 ## Reporting a vulnerability
 

@@ -71,6 +71,8 @@ The preview has a different API. Read the [migration guide](/docs/guides/migrati
 
 Use a secure context (HTTPS, or localhost for development) with Web Crypto, localStorage/sessionStorage, and IndexedDB available. Storage can be blocked by browser policy, private browsing, or an embedded context. Handle initialization failures rather than relying on a historical browser-version table.
 
+The library's current development source now has native browser checks across Playwright Chromium, Firefox, and WebKit, including cross-tab lifecycle cases. This coverage applies to the tested source rather than retroactively certifying stable 0.3.4. See [browser coverage](/docs/next/development#browser-coverage).
+
 The library's browser requirements are separate from the Node version used to build this documentation website. The website uses Node 24.
 
 ## Server rendering
@@ -81,6 +83,6 @@ The published 1.0.0-preview.0 package is safe to import under SSR, but storage o
 
 ## TypeScript and bundlers
 
-Types ship with the package. Use a bundler that understands ES modules and include DOM types for browser code. The package's CDN/minified bundle is not a documented supported installation path here: the existing bundle script and exports are tracked in [library #26](https://github.com/OSSAfrica/bvault-js/issues/26) and [#27](https://github.com/OSSAfrica/bvault-js/issues/27).
+Types ship with the package. Use a bundler that understands ES modules and include DOM types for browser code. The library's standalone bundle tooling is now fixed on main: it builds a browser ESM bundle used by the working playground. See [bundle tooling](/docs/next/development#bundle-tooling) for the source workflow. A published CDN/minified-bundle URL is not a supported installation path in these stable 0.3.4 instructions.
 
 Continue with the [quick start](/docs/getting-started/quick-start).
