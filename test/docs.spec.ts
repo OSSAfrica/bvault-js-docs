@@ -48,3 +48,34 @@ test('legacy URLs redirect and missing pages have a real 404', async ({ request 
   expect((await request.get('/missing-documentation-page')).status()).toBe(404);
   expect((await request.get('/docs/not-a-page')).status()).toBe(404);
 });
+
+test('installation tabs switch commands and remember the package manager', async ({ page }) => {
+  const errors: string[] = [];
+  page.on('pageerror', (error) => errors.push(error.message));
+  await page.goto('/docs/getting-started/installation-guide');
+  for (const [manager, command] of [
+    ['npm', 'npm install'],
+    ['pnpm', 'pnpm add'],
+    ['Bun', 'bun add'],
+  ]) {
+    await page.getByRole('tab', { name: manager, exact: true }).first().click();
+    await expect(page.getByRole('tabpanel').nth(0)).toContainText(`${command} bvault-js@0.3.4`);
+    await expect(page.getByRole('tabpanel').nth(1)).toContainText(`${command} bvault-js@preview`);
+  }
+  await page.reload();
+  await expect(page.getByRole('tab', { name: 'Bun', selected: true })).toHaveCount(2);
+  await page.getByRole('link', { name: 'preview quick start', exact: true }).click();
+  await expect(page.getByRole('tab', { name: 'Bun', selected: true })).toHaveCount(2);
+  await expect(page.getByRole('tabpanel').nth(0)).toContainText('bun add bvault-js@preview');
+  await expect(page.getByRole('tabpanel').nth(1)).toContainText(
+    'bun add bvault-js@1.0.0-preview.0',
+  );
+  await page.getByRole('tab', { name: 'npm', exact: true }).first().focus();
+  await page.keyboard.press('ArrowRight');
+  await page.keyboard.press('Enter');
+  await expect(page.getByRole('tab', { name: 'pnpm', selected: true })).toHaveCount(2);
+  await expect(page.getByRole('tabpanel').nth(1)).toContainText(
+    'pnpm add bvault-js@1.0.0-preview.0',
+  );
+  expect(errors).toEqual([]);
+});
