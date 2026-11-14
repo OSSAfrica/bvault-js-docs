@@ -5,7 +5,7 @@ description: 'What browser storage encryption can protect, and what your app sti
 
 ## Start with the version
 
-Stable 0.3.4 uses an application-supplied password and holds it in JavaScript memory. Upcoming 1.0 uses a generated, non-extractable AES-GCM key persisted in IndexedDB. Their guarantees and failure behavior differ; the upcoming model must not be attributed to the npm 0.3.4 package.
+Stable 0.3.4 uses an application-supplied password and holds it in JavaScript memory. The published 1.0.0-preview.0 prerelease uses a generated, non-extractable AES-GCM key persisted in IndexedDB. Their guarantees and failure behavior differ; the preview model must not be attributed to the npm 0.3.4 package.
 
 ## A browser fingerprint is not a password
 
@@ -15,17 +15,17 @@ The previous docs recommended ThumbmarkJS/FingerprintJS as a key source. That re
 
 An active script running in your origin can call the library or Web Crypto with a reachable key handle. Encryption at rest in browser storage does not prevent live XSS, enforce server authorization, or make JavaScript-readable session tokens inaccessible to injected scripts. Prefer an appropriate HttpOnly-cookie authentication design where applicable, and continue preventing XSS.
 
-For upcoming 1.0, non-extractability prevents exporting raw key material through the Web Crypto API. It is not a promise of hardware-backed storage or protection against someone who can copy/read the browser profile files. See the [library's threat-model explanation](https://github.com/OSSAfrica/bvault-js/blob/main/docs/how-bvault-works.md).
+For 1.0.0-preview.0, non-extractability prevents exporting raw key material through the Web Crypto API. It is not a promise of hardware-backed storage or protection against someone who can copy/read the browser profile files. See the [library's threat-model explanation](https://github.com/OSSAfrica/bvault-js/blob/bvault-js%401.0.0-preview.0/docs/how-bvault-works.md).
 
 ## Storage and key loss
 
-Browsers can evict or clear site storage, deny storage APIs, and impose retention policies. IndexedDB metadata loss breaks 0.3.4 reads. Loss of the upcoming 1.0 persisted key makes its ciphertext unreadable. A persistence request is best-effort, not a backup or recovery mechanism.
+Browsers can evict or clear site storage, deny storage APIs, and impose retention policies. IndexedDB metadata loss breaks 0.3.4 reads. Loss of the preview persisted key makes its ciphertext unreadable. A persistence request is best-effort, not a backup or recovery mechanism.
 
 Do not use browser storage as the sole copy of irreplaceable data. Plan for refetching, reauthentication, and an initialization-failure state. Origin changes (scheme/host/port) also change which browser storage an application sees.
 
-## Known upcoming-version limits
+## Known preview limitations
 
-These are open library work, not features supplied by the docs migration:
+These limitations and proposals remain tracked library work. Publishing a preview does not imply that they have been fixed or implemented:
 
 - [#8: concurrent initialization](https://github.com/OSSAfrica/bvault-js/issues/8): avoid launching multiple independent initializations; do not assume an open fix PR has shipped.
 - [#9: cross-tab destruction](https://github.com/OSSAfrica/bvault-js/issues/9): another tab can retain an in-memory key after destruction. Do not promise global logout/revocation.

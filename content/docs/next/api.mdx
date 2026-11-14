@@ -1,9 +1,9 @@
 ---
 title: '1.0 API preview'
-description: 'The upcoming storage API, lifecycle, and error behavior.'
+description: 'The storage API, lifecycle, and error behavior in bvault-js 1.0.0-preview.0.'
 ---
 
-**Unreleased preview:** verify the published release before using this API. [Stable 0.3.4 docs](/docs/core-api/secure-storage) describe a different interface.
+**Published prerelease: `bvault-js@1.0.0-preview.0`.** Install with `bun add bvault-js@preview` or `npm install bvault-js@preview`; see the [preview installation guide](/docs/next) and [prerelease notes](https://github.com/OSSAfrica/bvault-js/releases/tag/bvault-js%401.0.0-preview.0). [Stable 0.3.4 docs](/docs/core-api/secure-storage) describe a different interface.
 
 ## Public surface
 
@@ -24,7 +24,7 @@ Values use `bv1:`-prefixed keys and carry version/IV/ciphertext information in t
 Crypto/serialization failures during setItem are wrapped in EncryptionError. Storage quota/security errors propagate unchanged. Initialization and access to missing/blocked browser APIs can reject or throw. GetItem returns null for decryption failures and preserves ciphertext; null also means absent data.
 
 ```typescript
-// Upcoming 1.0 only. Run from your application's browser lifecycle.
+// bvault-js@1.0.0-preview.0. Run from your application's browser lifecycle.
 import { initializeSecureStorage, secureLocalStorage, destroySecureStorage } from 'bvault-js';
 
 export async function demonstrateCacheLifecycle() {
@@ -42,4 +42,4 @@ The destruction method is irreversible for data whose only key is deleted; use i
 
 ## SSR
 
-The upcoming module is safe to import in SSR, but initialize/set/get/remove/clear/destroy still require a browser environment. Never run them in a TanStack server function, a Cloudflare Pages build, or during a server render.
+The preview module is safe to import in SSR, but initialize/set/get/remove/clear/destroy still require a browser environment. Never run them in a TanStack server function, a Cloudflare Pages build, or during a server render.

@@ -30,8 +30,8 @@ export async function readCachedTheme(password: string) {
 
 Treat browser storage as a cache for data you can recover elsewhere. Catch initialization failures in your UI and let the user retry or continue without caching. Parse application JSON separately: JSON parsing errors are not cryptographic errors.
 
-## Upcoming 1.0
+## 1.0.0-preview.0
 
-The upcoming wrapper returns null on decryption failure **without deleting ciphertext**. Errors obtaining storage or initializing may still throw; quota/security failures from writes propagate unchanged, while crypto/serialization failures become EncryptionError. See the [preview API](/docs/next/api).
+The preview wrapper returns null on decryption failure **without deleting ciphertext**. Errors obtaining storage or initializing may still throw; quota/security failures from writes propagate unchanged, while crypto/serialization failures become EncryptionError. See the [preview API](/docs/next/api).
 
 The proposed ability to distinguish missing from undecryptable is tracked in [library #14](https://github.com/OSSAfrica/bvault-js/issues/14). Do not write examples using that feature until an implementation is released.

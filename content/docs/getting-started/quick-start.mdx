@@ -35,4 +35,4 @@ export async function removePreferences() {
 
 **Do not call `clear()` casually in 0.3.4:** it clears the entire corresponding browser Storage, including entries belonging to other code. A failed read also removes the affected entry in this version. See [the storage API](/docs/core-api/secure-storage).
 
-There is no `destroySecureStorage` export in 0.3.4. The [1.0 preview](/docs/next/api) documents the future lifecycle API, and the [upgrade guide](/docs/guides/migrating-to-1) explains the destructive transition.
+There is no `destroySecureStorage` export in 0.3.4. The [1.0 preview](/docs/next/api) documents the published prerelease lifecycle API, and the [upgrade guide](/docs/guides/migrating-to-1) explains the destructive transition.
