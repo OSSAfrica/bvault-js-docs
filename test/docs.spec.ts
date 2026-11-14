@@ -68,14 +68,14 @@ test('installation tabs switch commands and remember the package manager', async
   await expect(page.getByRole('tab', { name: 'Bun', selected: true })).toHaveCount(2);
   await expect(page.getByRole('tabpanel').nth(0)).toContainText('bun add bvault-js@preview');
   await expect(page.getByRole('tabpanel').nth(1)).toContainText(
-    'bun add bvault-js@1.0.0-preview.0',
+    'bun add bvault-js@1.0.0-preview.1',
   );
   await page.getByRole('tab', { name: 'npm', exact: true }).first().focus();
   await page.keyboard.press('ArrowRight');
   await page.keyboard.press('Enter');
   await expect(page.getByRole('tab', { name: 'pnpm', selected: true })).toHaveCount(2);
   await expect(page.getByRole('tabpanel').nth(1)).toContainText(
-    'pnpm add bvault-js@1.0.0-preview.0',
+    'pnpm add bvault-js@1.0.0-preview.1',
   );
   expect(errors).toEqual([]);
 });

@@ -3,7 +3,7 @@ title: 'Migrating from 0.x to 1.0'
 description: 'Plan for the breaking API change and destructive legacy cleanup before upgrading.'
 ---
 
-**Published prerelease:** this guide covers upgrading from 0.x to **1.0.0-preview.0**, available on the `preview` tag. Choose npm, pnpm, or Bun in the [preview installation guide](/docs/next#install-the-preview). The npm `latest` tag remains 0.3.4. Read the [prerelease notes](https://github.com/OSSAfrica/bvault-js/releases/tag/bvault-js%401.0.0-preview.0) before testing the upgrade; stable 1.0.0 is still tracked in [library #29](https://github.com/OSSAfrica/bvault-js/issues/29).
+**Published prerelease:** this guide covers upgrading from 0.x to **1.0.0-preview.1**, available on the `preview` tag. Choose npm, pnpm, or Bun in the [preview installation guide](/docs/next#install-the-preview). The npm `latest` tag remains 0.3.4. Read the [prerelease notes](https://github.com/OSSAfrica/bvault-js/blob/bc9a13006513a06d0fd5059aeb63e6c6680d91a9/CHANGELOG.md) before testing the upgrade; stable 1.0.0 is still tracked in [library #29](https://github.com/OSSAfrica/bvault-js/issues/29).
 
 ## Before the first new initialization
 
@@ -13,7 +13,7 @@ The library supplies no built-in encrypted-data migration. If your application s
 
 ## API changes
 
-| Stable 0.3.4                        | 1.0.0-preview.0                                                           |
+| Stable 0.3.4                        | 1.0.0-preview.1                                                           |
 | ----------------------------------- | ------------------------------------------------------------------------- |
 | Password required at initialization | No password argument                                                      |
 | Public encrypt/decrypt              | Removed                                                                   |
@@ -36,6 +36,6 @@ Rolling the package version back does not restore deleted data. Do not assume a 
 
 ## Logout and key loss
 
-The preview destruction API deletes the key, so ciphertext under it cannot be recovered without that key. In the published **preview.0** version, other tabs can retain cached key handles. [Library #9](https://github.com/OSSAfrica/bvault-js/issues/9) is fixed in the source staged for **preview.1**, pending npm approval; see [cross-tab lifecycle changes](/docs/next/development#cross-tab-destruction). Applications must still coordinate their own authentication/account state rather than treating key deletion as server-side session revocation.
+The preview destruction API deletes the key, so ciphertext under it cannot be recovered without that key. **Preview.1** includes the [library #9](https://github.com/OSSAfrica/bvault-js/issues/9) fix: same-origin tabs using the updated library invalidate their cached keys and reject reads/writes until reinitialized. The older preview.0 package can leave other tabs holding stale key handles. Read [cross-tab lifecycle behavior](/docs/next/development#cross-tab-destruction), and continue to coordinate your own authentication/account state rather than treating key deletion as server-side session revocation.
 
-Review the [actual migration source](https://github.com/OSSAfrica/bvault-js/blob/bvault-js%401.0.0-preview.0/src/lib/migration.ts) and [tests](https://github.com/OSSAfrica/bvault-js/blob/bvault-js%401.0.0-preview.0/test/migration.test.ts), along with the [preview API](/docs/next/api).
+Review the [actual migration source](https://github.com/OSSAfrica/bvault-js/blob/bc9a13006513a06d0fd5059aeb63e6c6680d91a9/src/lib/migration.ts) and [tests](https://github.com/OSSAfrica/bvault-js/blob/bc9a13006513a06d0fd5059aeb63e6c6680d91a9/test/migration.test.ts), along with the [preview API](/docs/next/api).

@@ -5,7 +5,7 @@ description: 'What browser storage encryption can protect, and what your app sti
 
 ## Start with the version
 
-Stable 0.3.4 uses an application-supplied password and holds it in JavaScript memory. The published 1.0.0-preview.0 prerelease uses a generated, non-extractable AES-GCM key persisted in IndexedDB. Their guarantees and failure behavior differ; the preview model must not be attributed to the npm 0.3.4 package.
+Stable 0.3.4 uses an application-supplied password and holds it in JavaScript memory. The published 1.0.0-preview.1 prerelease uses a generated, non-extractable AES-GCM key persisted in IndexedDB. Their guarantees and failure behavior differ; the preview model must not be attributed to the npm 0.3.4 package.
 
 ## A browser fingerprint is not a password
 
@@ -15,7 +15,7 @@ The previous docs recommended ThumbmarkJS/FingerprintJS as a key source. That re
 
 An active script running in your origin can call the library or Web Crypto with a reachable key handle. Encryption at rest in browser storage does not prevent live XSS, enforce server authorization, or make JavaScript-readable session tokens inaccessible to injected scripts. Prefer an appropriate HttpOnly-cookie authentication design where applicable, and continue preventing XSS.
 
-For 1.0.0-preview.0, non-extractability prevents exporting raw key material through the Web Crypto API. It is not a promise of hardware-backed storage or protection against someone who can copy/read the browser profile files. See the [library's threat-model explanation](https://github.com/OSSAfrica/bvault-js/blob/bvault-js%401.0.0-preview.0/docs/how-bvault-works.md).
+For 1.0.0-preview.1, non-extractability prevents exporting raw key material through the Web Crypto API. It is not a promise of hardware-backed storage or protection against someone who can copy/read the browser profile files. See the [library's threat-model explanation](https://github.com/OSSAfrica/bvault-js/blob/bc9a13006513a06d0fd5059aeb63e6c6680d91a9/docs/how-bvault-works.md).
 
 ## Storage and key loss
 
@@ -25,7 +25,7 @@ Do not use browser storage as the sole copy of irreplaceable data. Plan for refe
 
 ## Known preview limitations
 
-The following limitations and proposals remain tracked library work, including in the staged preview.1 source:
+The following limitations and proposals remain tracked library work, including in the published preview.1 package:
 
 - [#8: concurrent initialization](https://github.com/OSSAfrica/bvault-js/issues/8): avoid launching multiple independent initializations; do not assume an open fix PR has shipped.
 - [#10: IndexedDB lifecycle](https://github.com/OSSAfrica/bvault-js/issues/10): blocked upgrades and schema recovery need work.
@@ -34,9 +34,9 @@ The following limitations and proposals remain tracked library work, including i
 
 ### Cross-tab destruction by version
 
-The published **1.0.0-preview.0** package can leave another tab holding a deleted key after destruction. [Issue #9](https://github.com/OSSAfrica/bvault-js/issues/9) is now fixed on main by [PR #64](https://github.com/OSSAfrica/bvault-js/pull/64), prepared for **1.0.0-preview.1**, which is still awaiting npm approval.
+The older **1.0.0-preview.0** package can leave another tab holding a deleted key after destruction. **1.0.0-preview.1**, now published on the `preview` tag, includes the [issue #9](https://github.com/OSSAfrica/bvault-js/issues/9) fix from [PR #64](https://github.com/OSSAfrica/bvault-js/pull/64).
 
-The staged implementation resets key state across tabs and checks for missed notifications before using a cached key. Applications must handle rejected reads/writes and failed destruction; this is not a server-session revocation mechanism. See [next preview lifecycle behavior](/docs/next/development#cross-tab-destruction) for the version boundary and application responsibilities.
+The preview.1 implementation resets key state across tabs using the updated library and checks for missed notifications before using a cached key. Applications must handle rejected reads/writes and failed destruction; this is not a server-session revocation mechanism. See [preview lifecycle behavior](/docs/next/development#cross-tab-destruction) for the version boundary and application responsibilities.
 
 ## Reporting a vulnerability
 

@@ -1,9 +1,9 @@
 ---
 title: '1.0 API preview'
-description: 'The storage API, lifecycle, and error behavior in bvault-js 1.0.0-preview.0.'
+description: 'The storage API, lifecycle, and error behavior in bvault-js 1.0.0-preview.1.'
 ---
 
-**Published prerelease: `bvault-js@1.0.0-preview.0`.** Choose npm, pnpm, or Bun in the [preview installation guide](/docs/next#install-the-preview), and read the [prerelease notes](https://github.com/OSSAfrica/bvault-js/releases/tag/bvault-js%401.0.0-preview.0). [Stable 0.3.4 docs](/docs/core-api/secure-storage) describe a different interface.
+**Published prerelease: `bvault-js@1.0.0-preview.1`.** Choose npm, pnpm, or Bun in the [preview installation guide](/docs/next#install-the-preview), and read the [prerelease notes](https://github.com/OSSAfrica/bvault-js/blob/bc9a13006513a06d0fd5059aeb63e6c6680d91a9/CHANGELOG.md). [Stable 0.3.4 docs](/docs/core-api/secure-storage) describe a different interface.
 
 ## Public surface
 
@@ -21,10 +21,10 @@ Values use `bv1:`-prefixed keys and carry version/IV/ciphertext information in t
 
 ## Failures
 
-Crypto/serialization failures during setItem are wrapped in EncryptionError. Storage quota/security errors propagate unchanged. Initialization and access to missing/blocked browser APIs can reject or throw. GetItem returns null for decryption failures and preserves ciphertext; null also means absent data.
+Crypto/serialization failures during setItem are wrapped in EncryptionError. Storage quota/security errors propagate unchanged. Initialization and access to missing/blocked browser APIs can reject or throw. GetItem returns null for decryption failures and preserves ciphertext; null also means absent data. Key-lifecycle failures are separate: a read or write can reject after another tab destroys the key, and destruction can reject if its coordination marker cannot be written.
 
 ```typescript
-// bvault-js@1.0.0-preview.0. Run from your application's browser lifecycle.
+// bvault-js@1.0.0-preview.1. Run from your application's browser lifecycle.
 import { initializeSecureStorage, secureLocalStorage, destroySecureStorage } from 'bvault-js';
 
 export async function demonstrateCacheLifecycle() {
@@ -38,7 +38,7 @@ export async function demonstrateCacheLifecycle() {
 }
 ```
 
-The destruction method is irreversible for data whose only key is deleted; use it as part of an explicitly designed logout/account-switch policy. In this published **preview.0** version, it does not guarantee other tabs have discarded in-memory handles. The cross-tab fix is merged for staged **preview.1**; read [next preview lifecycle behavior](/docs/next/development#cross-tab-destruction). Concurrent initialization and IndexedDB lifecycle fixes remain pending; read [known limitations](/docs/security).
+The destruction method is irreversible for data whose only key is deleted; use it as part of an explicitly designed logout/account-switch policy. In **preview.1**, it coordinates key-cache invalidation across same-origin tabs using the updated library. Reads/writes in invalidated tabs reject until reinitialized, and operations already awaiting cryptography recheck their key. Read [preview lifecycle behavior](/docs/next/development#cross-tab-destruction), including destruction failures and application authentication responsibilities. Concurrent initialization and IndexedDB lifecycle fixes remain pending; read [known limitations](/docs/security).
 
 ## SSR
 

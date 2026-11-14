@@ -44,7 +44,7 @@ CI runs formatting, a production build (which generates route types), typechecki
 - Pages live in `content/docs`; `meta.json` controls section order.
 - The filename determines the URL. `index.mdx` is its folder's landing page.
 - Use `title` and `description` frontmatter. Fumadocs MDX components come from `src/components/mdx.tsx`; Docusaurus `:::` syntax is no longer supported.
-- Keep runnable examples aligned with a published version. Stable docs target 0.3.4; `content/docs/next` documents the published 1.0.0-preview.0 prerelease installed with `bvault-js@preview`. Keep preview and stable APIs distinct, and verify the registry tags and published artifact before updating their status. `content/docs/next/development.mdx` records changes merged for staged preview.1; do not move those guarantees or install pins into published-version docs until npm approval and registry publication are verified.
+- Keep runnable examples aligned with a published version. Stable docs target 0.3.4; `content/docs/next` documents the published 1.0.0-preview.1 prerelease installed with `bvault-js@preview`. Keep preview and stable APIs distinct, and verify the registry tags and published artifact before updating their status. `content/docs/next/development.mdx` explains the published preview.1 lifecycle and source tooling. Keep future staged changes separate from published guarantees and install pins until registry publication is verified.
 - Content changes automatically rebuild the search index. Update `public/_redirects` whenever a published URL changes. `scripts/check-content.mjs` checks rendered internal links/anchors and assets.
 - Static assets live in `public`. Existing logos and social images retain `/img/...` URLs.
 
